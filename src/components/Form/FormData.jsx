@@ -3,12 +3,12 @@ import InputSelect from './InputSelect'
 
 function FormData() {
   return (
-    <div>
-      <div class="mb-6 text-center">
-        <h1 class="px-4 lg:px-40 text-4xl font-bold text-left">
+    <div className='py-36'>
+      <div class="">
+        <h1 class=" px-4 lg:px-40 text-4xl">
           <span class="text-black ">Sam</span><span class="text-blue-500">la</span>
         </h1>
-        <h2 class="px-4 lg:px-40 mt-2 text-xl font-semibold text-gray-800 text-left">Registro</h2>
+        <h2 className=" px-4 lg:px-40 mt-2 text-xl font-semibold text-gray-800 text-left">Registro</h2>
       </div>
       <form className='px-4 lg:px-40'>
 

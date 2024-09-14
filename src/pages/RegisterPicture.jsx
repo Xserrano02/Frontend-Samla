@@ -4,16 +4,16 @@ import DragAndDrog from '../components/Form/DragAndDrog';
 
 function RegisterPicture() {
   return (
-    <div className="flex flex-col lg:flex-row h-screen">
-      <section className="flex flex-col lg:flex-row w-full h-full">
-        <section className="relative w-full lg:w-1/2 h-full p-4 lg:p-8">
-          <FormData />
-        </section>
+    <div className="flex flex-wrap w-ful mt-10 rounded-tl-lg rounded-tr-lg">
 
-        <section className="w-full lg:w-1/2 h-full p-4 lg:p-8 bg-white flex items-start">
-          <DragAndDrog />
-        </section>
+      <section className='w-1/2 h-screen bg-white'>
+        <FormData/>
       </section>
+
+      <section className='w-1/2 h-screen bg-white'>
+        <DragAndDrog/>
+      </section>
+
     </div>
   );
 }
