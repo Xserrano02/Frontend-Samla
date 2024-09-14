@@ -1,0 +1,41 @@
+.container-register{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.container-register-images{
+    position: relative;
+    width: 50%;
+}
+
+.register-background{
+    width: 100%;
+    height: 100vh;
+}
+
+.register-ImageFamily{
+    position: absolute;
+    top: 10%;
+    left: 12%;
+    width: 70%;
+}
+
+.icon-register{
+    top: 38%;
+    left: 9%;
+}
+/***********FORMULARIO********/
+
+.container-form{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin:  0 auto;
+    background-color: #000;
+}
