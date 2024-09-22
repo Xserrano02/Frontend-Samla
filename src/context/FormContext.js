@@ -4,6 +4,7 @@ export const FormContext = createContext();
 
 export const FormProvider = ({ children }) => {
   const [formData, setFormData] = useState({
+    usuarios: [], 
     nombres: '',
     apellidos: '',
     correo: '',
@@ -14,7 +15,8 @@ export const FormProvider = ({ children }) => {
     municipio: '',
     direccion: '',
     ingresosMensuales: '',
-    documentoFoto: null,
+    documentoFotoFrontal: null, 
+    documentoFotoTrasera: null, 
     selfieFoto: null,
   });
 
@@ -25,7 +27,7 @@ export const FormProvider = ({ children }) => {
     }));
   };
 
-  console.log(formData)
+  console.log(formData);
 
   return (
     <FormContext.Provider value={{ formData, updateFormData }}>

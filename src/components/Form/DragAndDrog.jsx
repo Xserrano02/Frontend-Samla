@@ -1,20 +1,46 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import iconDrop from '../../Assets/images/iconDrop.png';
 import Button from './Button';
 import { FormContext } from '../../context/FormContext';
+import ImagePreviewModal from '../../components/ImagePreviewModal';
 
 const FileUpload = ({ onContinue }) => {
-  const { updateFormData } = useContext(FormContext);
+  const { formData, updateFormData } = useContext(FormContext);
+  const [imageToPreview, setImageToPreview] = useState(null);
+  const [currentImageType, setCurrentImageType] = useState('');
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        updateFormData({ documentoFoto: reader.result });
+        if (!formData.documentoFotoFrontal) {
+          setCurrentImageType('frontal');
+        } else {
+          setCurrentImageType('trasera');
+        }
+
+        setImageToPreview(reader.result);
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleConfirm = () => {
+    if (currentImageType === 'frontal') {
+      updateFormData({ documentoFotoFrontal: imageToPreview });
+    } else if (currentImageType === 'trasera') {
+      updateFormData({ documentoFotoTrasera: imageToPreview });
+    }
+
+    // Resetear el modal
+    setImageToPreview(null);
+    setCurrentImageType('');
+  };
+
+  const handleCancel = () => {
+    setImageToPreview(null);
+    setCurrentImageType('');
   };
 
   return (
@@ -40,6 +66,15 @@ const FileUpload = ({ onContinue }) => {
           Seleccionar archivo
         </label>
       </div>
+
+    
+      {imageToPreview && (
+        <ImagePreviewModal
+          image={imageToPreview}
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+        />
+      )}
 
       <div className='flex flex-wrap flex-row-reverse pt-20 w-80 md:w-3/4 gap-x-4 gap-y-4 mx-10 md:mx-0'>
         <Button 

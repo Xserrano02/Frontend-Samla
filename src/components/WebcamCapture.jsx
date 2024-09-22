@@ -3,7 +3,7 @@ import Webcam from 'react-webcam';
 import { PostUsers } from "../services/ApiServices.js";
 import { FormContext } from '../context/FormContext.js';
 
-function WebcamCapture({ onCapture, onClose }) {
+function WebcamCapture({ onCapture, onClose, navigate }) {
   const webcamRef = useRef(null);
   const [capturedImage, setCapturedImage] = useState(null);
   const { formData, updateFormData } = useContext(FormContext)
@@ -28,6 +28,7 @@ function WebcamCapture({ onCapture, onClose }) {
       try {
         const result = await PostUsers(formData);
         console.log('Datos enviados:', result);
+        navigate()
       } catch (error) {
         console.error('Error al enviar los datos:', error);
       }
@@ -43,6 +44,9 @@ function WebcamCapture({ onCapture, onClose }) {
             ref={webcamRef}
             screenshotFormat="image/jpeg"
             className="rounded-lg border-2 border-gray-300 mb-4"
+            videoConstraints={{
+              facingMode: "user"
+            }}
           />
           <button onClick={capture} className="px-4 py-2 bg-orange-500 text-white rounded-md">
             Capturar foto

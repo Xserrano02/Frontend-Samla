@@ -2,13 +2,24 @@ import React, { useState } from 'react';
 import { FaCamera } from 'react-icons/fa';
 import logo from '../Assets/images/logo.png';
 import CameraModal from '../components/CamaraModal';
+import { useNavigate } from 'react-router-dom';
+
 
 function RegisterSelfie() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const navigate = useNavigate()
+
+
   function toggleModal() {
     setIsModalOpen(!isModalOpen);
   }
+
+  const handleNavigate = () =>{
+    navigate('/registrations')
+
+  }
+
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-white">
@@ -29,7 +40,7 @@ function RegisterSelfie() {
         Continuar
       </button>
 
-      <CameraModal isOpen={isModalOpen} onClose={toggleModal} />
+      <CameraModal isOpen={isModalOpen} onClose={toggleModal} navigate={handleNavigate} />
     </div>
   );
 }

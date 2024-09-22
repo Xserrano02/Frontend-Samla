@@ -27,7 +27,6 @@ const FormComponent = () => {
 
   return (
     <div>
-      {/* Aquí puedes mostrar otros elementos de tu formulario */}
       <button onClick={handleSubmit} className="px-4 py-2 bg-blue-500 text-white rounded-md mt-4">
         Enviar
       </button>

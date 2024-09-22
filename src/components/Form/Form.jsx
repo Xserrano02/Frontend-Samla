@@ -15,7 +15,23 @@ function Form({ handleContinue }) {
         tipoIdentificacion: '',
     });
     const [errors, setErrors] = useState({});
-    const [formError, setFormError] = useState(''); // Estado para el mensaje general de error
+    const [formError, setFormError] = useState('');
+
+    const [fieldErrors, setFieldErrors] = useState({
+        nombres: false,
+        apellidos: false,
+        correo: false,
+        numeroIdentificacion: false,
+        telefono: false,
+        tipoIdentificacion: false,
+    });
+
+    function setFieldError(fieldName, hasError) {
+        setFieldErrors((prevErrors) => ({
+            ...prevErrors,
+            [fieldName]: hasError,
+        }));
+    }
 
     function handleChange(event) {
         const { name, value } = event.target;
@@ -27,23 +43,28 @@ function Form({ handleContinue }) {
 
     function handleSubmit(event) {
         event.preventDefault();
-        const newErrors = {};
 
-        if (!formData.nombres) newErrors.nombres = true;
-        if (!formData.apellidos) newErrors.apellidos = true;
-        if (!formData.correo) newErrors.correo = true;
-        if (!formData.numeroIdentificacion) newErrors.numeroIdentificacion = true;
-        if (!formData.telefono) newErrors.telefono = true;
-        if (!formData.tipoIdentificacion) newErrors.tipoIdentificacion = true;
+        const newErrors = {};
+        let hasEmptyFields = false;
+
+        // Validar campos vacíos
+        Object.keys(formData).forEach((key) => {
+            if (!formData[key]) {
+                newErrors[key] = true;
+                hasEmptyFields = true;
+            }
+        });
 
         setErrors(newErrors);
 
-        if (Object.keys(newErrors).length === 0) {
-            setFormError(''); // No hay errores, limpiar el mensaje general de error
+        const hasFormatErrors = Object.values(fieldErrors).some((error) => error);
+
+        if (hasEmptyFields || hasFormatErrors) {
+            setFormError('Necesita completar todos los campos correctamente para avanzar');
+        } else {
+            setFormError('');
             updateFormData(formData);
             handleContinue();
-        } else {
-            setFormError('Necesita completar todos los campos para avanzar'); // Mostrar mensaje general de error
         }
     }
 
@@ -60,6 +81,7 @@ function Form({ handleContinue }) {
                     name="nombres"
                     value={formData.nombres}
                     onChange={handleChange}
+                    setFieldError={setFieldError}
                     hasError={errors.nombres}
                     required={true}
                     type="text"
@@ -71,6 +93,7 @@ function Form({ handleContinue }) {
                     name="apellidos"
                     value={formData.apellidos}
                     onChange={handleChange}
+                    setFieldError={setFieldError}
                     hasError={errors.apellidos}
                     required={true}
                     type="text"
@@ -82,6 +105,7 @@ function Form({ handleContinue }) {
                     name="correo"
                     value={formData.correo}
                     onChange={handleChange}
+                    setFieldError={setFieldError}
                     hasError={errors.correo}
                     required={true}
                 />
@@ -124,14 +148,14 @@ function Form({ handleContinue }) {
                     name="numeroIdentificacion"
                     value={formData.numeroIdentificacion}
                     onChange={handleChange}
+                    setFieldError={setFieldError}
                     hasError={errors.numeroIdentificacion}
                     required={true}
-                    type="text"
                 />
 
                 <div>
                     <button
-                        type='submit'
+                        type="submit"
                         className="w-full px-4 py-2 font-medium text-white bg-orange-500 rounded-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500"
                     >
                         Continuar

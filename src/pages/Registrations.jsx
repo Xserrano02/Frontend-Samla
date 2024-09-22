@@ -1,38 +1,62 @@
-import React, { useContext, useEffect } from 'react';
-// import { FormContext } from '../context/FormContext';
-// import { GetUsers } from '../services/ApiServices';
+import React, { useContext, useEffect, useState } from 'react';
+import { FormContext } from '../context/FormContext';
+import { GetsUser } from '../services/ApiServices';
+import UserDetailsModal from '../components/UserModal';
 
 const Registrations = () => {
-  // const { formData,updateFormData } = useContext(FormContext);
+  const { formData, updateFormData } = useContext(FormContext);
+  const [selectedUser, setSelectedUser] = useState(null); 
+  const [currentPage, setCurrentPage] = useState(1);
+  const usersPerPage = 12;
 
-  // useEffect(() => {
-  //   GetUsers(updateFormData);
-  // }, []);
+  useEffect(() => {
+    GetsUser(updateFormData);
+  }, [updateFormData]);
 
-  // console.log('Datos recibidos: ',formData)
+  const handleViewDetails = (user) => {
+    setSelectedUser(user);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedUser(null);
+  };
+
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = formData.usuarios?.slice(indexOfFirstUser, indexOfLastUser);
+
+  // Cambiar la página
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Número total de páginas
+  const totalPages = Math.ceil(formData.usuarios?.length / usersPerPage);
 
   return (
     <div className="pt-4">
-      <h1 className="text-2xl font-bold  text-white ml-4 mb-4"> Samla</h1>
+      <h1 className="text-2xl font-bold text-white ml-4 mb-4">Samla</h1>
       <div className="overflow-x-auto bg-white h-screen">
-        <h2 className='text-2xl font-bold py-10 mx-28'>Historial de registros</h2>
-        <table className="min-w-[82%] bg-white border border-gray-20 mx-28">
+        <h2 className="text-2xl font-bold py-10 mx-4 md:mx-28 text-left">Historial de registros</h2>
+        
+        <table className="min-w-[100%] md:min-w-[82%] bg-white mx-0 md:mx-28">
           <thead>
             <tr>
-              <th className="px-4 py-2 border-b">Nombres y apellidos</th>
-              <th className="px-4 py-2 border-b">Correo electrónico</th>
-              <th className="px-4 py-2 border-b">Número telefónico</th>
-              <th className="px-4 py-2 border-b">Acciones</th>
+              <th className="px-4 py-2 border-b text-[#667085] text-left">Nombres y apellidos</th>
+              <th className="px-4 py-2 border-b text-[#667085] text-left hidden md:table-cell">Correo electrónico</th>
+              <th className="px-4 py-2 border-b text-[#667085] text-left hidden md:table-cell">Número telefónico</th>
+              <th className="px-4 py-2 border-b text-[#667085] text-left">Acciones</th>
             </tr>
           </thead>
           <tbody>
-            {/* {formData.usuarios && formData.usuarios.length > 0 ? (
-              formData.usuarios.map((usuario, index) => (
+            {currentUsers && currentUsers.length > 0 ? (
+              currentUsers.map((usuario, index) => (
                 <tr key={index} className="hover:bg-gray-100">
-                  <td className="px-4 py-2 border-b">{usuario.nombres}</td>
-                  <td className="px-4 py-2 border-b">{usuario.correo}</td>
-                  <td className="px-4 py-2 border-b">{usuario.telefono}</td>
-                  <td className="px-4 py-2 border-b text-blue-500 cursor-pointer">
+                  <td className="px-4 py-2 border-b">{`${usuario.nombres} ${usuario.apellidos}`}</td>
+                  <td className="px-4 py-2 border-b text-[#667085] hidden md:table-cell">{usuario.correo}</td>
+                  <td className="px-4 py-2 border-b text-[#667085] hidden md:table-cell">{usuario.telefono}</td>
+                  <td
+                    className="px-4 py-2 border-b text-blue-500 cursor-pointer"
+                    onClick={() => handleViewDetails(usuario)}
+                  >
                     Ver detalle
                   </td>
                 </tr>
@@ -43,19 +67,46 @@ const Registrations = () => {
                   No hay registros disponibles
                 </td>
               </tr>
-            )} */}
+            )}
           </tbody>
         </table>
-        <div className="flex justify-between items-center mt-4">
-          <button className="px-4 py-2 text-blue-500">Anterior</button>
-          <div className="space-x-2">
-            <button className="px-2 py-1 border border-gray-200">1</button>
-            <span>...</span>
-            <button className="px-2 py-1 border border-gray-200">9</button>
-            <button className="px-2 py-1 border border-gray-200">10</button>
+
+        {formData.usuarios && formData.usuarios.length > usersPerPage && (
+          <div className="flex justify-end items-center mt-4 space-x-2 mx-28">
+            {/* Botón anterior */}
+            <button
+              className="w-8 h-8 flex items-center justify-center rounded border border-gray-300 text-gray-500 hover:bg-gray-200"
+              onClick={() => paginate(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              {'<'}
+            </button>
+
+            {[...Array(totalPages)].map((_, i) => (
+              <button
+                key={i}
+                className={`w-8 h-8 flex items-center justify-center rounded border ${
+                  currentPage === i + 1 ? 'border-blue-500 text-blue-500 font-bold' : 'border-gray-300 text-gray-500'
+                } hover:bg-gray-200`}
+                onClick={() => paginate(i + 1)}
+              >
+                {i + 1}
+              </button>
+            ))}
+
+            <button
+              className="w-8 h-8 flex items-center justify-center rounded border border-gray-300 text-gray-500 hover:bg-gray-200"
+              onClick={() => paginate(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              {'>'}
+            </button>
           </div>
-          <button className="px-4 py-2 text-blue-500">Siguiente</button>
-        </div>
+        )}
+
+        {selectedUser && (
+          <UserDetailsModal user={selectedUser} onClose={handleCloseModal} />
+        )}
       </div>
     </div>
   );

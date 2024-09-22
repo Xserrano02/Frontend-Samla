@@ -1,15 +1,21 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { FormContext } from '../../context/FormContext';
 import InputSelect from './InputSelect';
-// import logo from '../../Assets/images/logo.png';
 import { fetchUbicaciones } from '../../services/ApiServices.js';
-import Inputs from './Inputs'
+import Inputs from './Inputs';
 
 function FormData() {
   const { formData, updateFormData } = useContext(FormContext);
   const [departamentos, setDepartamentos] = useState([]);
   const [filteredMunicipios, setFilteredMunicipios] = useState([]);
+  const [fieldErrors, setFieldErrors] = useState({
+    direccion: false,
+    correo: false,
+    numeroIdentificacion: false,
+  });
 
+
+  console.log(fieldErrors)
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -25,12 +31,24 @@ function FormData() {
 
   function handleChange(event) {
     const { name, value } = event.target;
-    updateFormData({ [name]: value });
 
     if (name === 'departamento') {
       const selectedDepartamento = departamentos.find((dep) => dep.id === value);
+      updateFormData({ departamento: selectedDepartamento ? selectedDepartamento.nombre : '' });
       setFilteredMunicipios(selectedDepartamento ? selectedDepartamento.municipios : []);
+    } else if (name === 'municipio') {
+      const selectedMunicipio = filteredMunicipios.find((mun) => mun.id_mun === value);
+      updateFormData({ municipio: selectedMunicipio ? selectedMunicipio.nombre : '' });
+    } else {
+      updateFormData({ [name]: value });
     }
+  }
+
+  function setFieldError(fieldName, hasError) {
+    setFieldErrors((prevErrors) => ({
+      ...prevErrors,
+      [fieldName]: hasError,
+    }));
   }
 
   return (
@@ -57,7 +75,6 @@ function FormData() {
           onChange={handleChange}
           options={filteredMunicipios.map((mun) => ({ id: mun.id_mun, nombre: mun.nombre }))}
           required={true}
-
         />
         <Inputs
           label="Direccion"
@@ -65,8 +82,8 @@ function FormData() {
           name="direccion"
           value={formData.direccion}
           onChange={handleChange}
+          setFieldError={setFieldError}
           required={true}
-
         />
 
         <div className="mb-4">

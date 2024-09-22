@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Inputs = ({ label, placeholder, name, value, onChange, required, type }) => {
+const Inputs = ({ label, placeholder, name, value, onChange, required, type, setFieldError }) => {
     const [error, setError] = useState('');
 
     const handleValidation = (event) => {
@@ -8,12 +8,31 @@ const Inputs = ({ label, placeholder, name, value, onChange, required, type }) =
 
         if (required && !value) {
             setError(`${label} es obligatorio`);
-        } else if (type === 'number' && isNaN(value)) {
-            setError(`${label} debe ser un número válido`);
-        } else if (type === 'text' && !/^[a-zA-Z\s]*$/.test(value)) {
-            setError(`${label} solo debe contener letras`);
+            setFieldError(name, true);
+        } else if (name === 'correo') {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(value)) {
+                setError('Correo no tiene un formato válido');
+                setFieldError(name, true);
+            } else {
+                setError('');
+                setFieldError(name, false);
+            }
+        } else if (name === 'numeroIdentificacion') {
+            const duiRegex = /^\d{8}-\d{1}$/;
+            const nitRegex = /^\d{4}-\d{6}-\d{3}-\d{1}$/;
+            const pasaporteRegex = /^[a-zA-Z0-9]{5,9}$/;
+            
+            if (!duiRegex.test(value) && !nitRegex.test(value) && !pasaporteRegex.test(value)) {
+                setError('Número de identificación no tiene un formato válido');
+                setFieldError(name, true);
+            } else {
+                setError('');
+                setFieldError(name, false);
+            }
         } else {
             setError('');
+            setFieldError(name, false);
         }
 
         onChange(event);
