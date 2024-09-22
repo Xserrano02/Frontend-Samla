@@ -3,6 +3,8 @@ import { FormContext } from '../../context/FormContext';
 import InputSelect from './InputSelect';
 import { fetchUbicaciones } from '../../services/ApiServices.js';
 import Inputs from './Inputs';
+import logo from '../../Assets/images/logo.png';
+
 
 function FormData() {
   const { formData, updateFormData } = useContext(FormContext);
@@ -52,10 +54,13 @@ function FormData() {
   }
 
   return (
-    <div className="md:py-36">
-      <h1 className="text-center md:text-left px-4 lg:px-40 text-4xl mt-8 md:mt-0 mb-8 md:mb-0">
-        <span className="text-black">Sam</span><span className="text-blue-500">la</span>
-      </h1>
+    <div className="md:py-36 mt-24 md:mt-0">
+      <img
+        src={logo}
+        alt="Logo"
+        className="mb-8 w-24 absolute top-16 left-40 md:left-20 md:top-auto md:static md:ml-40"
+      />
+
       <h2 className="text-center px-4 lg:px-40 mt-2 text-xl font-semibold text-gray-800 md:text-left mb-8 md:mb-0">Datos de vivienda</h2>
 
       <form className="px-4 lg:px-40">

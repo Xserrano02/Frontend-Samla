@@ -21,7 +21,7 @@ const Inputs = ({ label, placeholder, name, value, onChange, required, type, set
         } else if (name === 'numeroIdentificacion') {
             const duiRegex = /^\d{8}-\d{1}$/;
             const nitRegex = /^\d{4}-\d{6}-\d{3}-\d{1}$/;
-            const pasaporteRegex = /^[a-zA-Z0-9]{5,9}$/;
+            const pasaporteRegex = /^[a-zA-Z]{1,}[a-zA-Z0-9]{4,8}$/;  // Ajuste: el pasaporte ahora debe empezar con una letra
             
             if (!duiRegex.test(value) && !nitRegex.test(value) && !pasaporteRegex.test(value)) {
                 setError('Número de identificación no tiene un formato válido');

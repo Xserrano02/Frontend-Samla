@@ -117,13 +117,14 @@ function Form({ handleContinue }) {
                             <option value="sv">🇸🇻</option>
                         </select>
                         <input
-                            type="text"
+                            type="number"
                             id="telefono"
                             name="telefono"
                             placeholder="(+503)"
                             value={formData.telefono}
                             onChange={handleChange}
                             className={`w-full px-3 py-2 border rounded-r-md focus:outline-none focus:ring-2 ${errors.telefono ? 'border-red-500' : 'focus:ring-blue-500'}`}
+                            
                         />
                     </div>
                 </div>

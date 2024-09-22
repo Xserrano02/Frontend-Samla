@@ -8,21 +8,49 @@ const FileUpload = ({ onContinue }) => {
   const { formData, updateFormData } = useContext(FormContext);
   const [imageToPreview, setImageToPreview] = useState(null);
   const [currentImageType, setCurrentImageType] = useState('');
+  const [dragActive, setDragActive] = useState(false);
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
+  const handleFileChange = (file) => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
         if (!formData.documentoFotoFrontal) {
           setCurrentImageType('frontal');
-        } else {
+        } else if (!formData.documentoFotoTrasera) {
           setCurrentImageType('trasera');
         }
-
         setImageToPreview(reader.result);
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const handleDragEnter = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(true);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      handleFileChange(file);
     }
   };
 
@@ -33,7 +61,6 @@ const FileUpload = ({ onContinue }) => {
       updateFormData({ documentoFotoTrasera: imageToPreview });
     }
 
-    // Resetear el modal
     setImageToPreview(null);
     setCurrentImageType('');
   };
@@ -48,14 +75,20 @@ const FileUpload = ({ onContinue }) => {
       <label className="block text-lg font-medium text-gray-800 mb-10 md:mb-4 text-center md:text-left">
         Fotografía de documento de identidad
       </label>
-      <div className="border-2 border-dashed border-blue-500 rounded-lg p-4 flex flex-col items-center justify-center w-80 mx-10 md:mx-0 h-96 md:h-72 md:w-3/4 cursor-pointer">
+      <div
+        className={`border-2 border-dashed ${dragActive ? 'border-blue-500' : 'border-blue-300'} rounded-lg p-4 flex flex-col items-center justify-center w-80 mx-10 md:mx-0 h-96 md:h-72 md:w-3/4 cursor-pointer`}
+        onDragEnter={handleDragEnter}
+        onDragLeave={handleDragLeave}
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+      >
         <img src={iconDrop} className="text-blue-500 text-6xl mb-4" alt="" />
         <p className="text-gray-600">Arrastrar aquí</p>
         <p className="text-gray-400">o</p>
         <input 
           type="file" 
           id="file-upload" 
-          onChange={handleFileChange} 
+          onChange={(e) => handleFileChange(e.target.files[0])} 
           className="hidden" 
           accept="image/*" 
         />
@@ -67,7 +100,6 @@ const FileUpload = ({ onContinue }) => {
         </label>
       </div>
 
-    
       {imageToPreview && (
         <ImagePreviewModal
           image={imageToPreview}

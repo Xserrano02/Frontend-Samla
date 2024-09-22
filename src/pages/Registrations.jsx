@@ -3,15 +3,28 @@ import { FormContext } from '../context/FormContext';
 import { GetsUser } from '../services/ApiServices';
 import UserDetailsModal from '../components/UserModal';
 
+
 const Registrations = () => {
   const { formData, updateFormData } = useContext(FormContext);
   const [selectedUser, setSelectedUser] = useState(null); 
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
   const usersPerPage = 12;
 
   useEffect(() => {
-    GetsUser(updateFormData);
+    const fetchData = async () => {
+      setIsLoading(true);
+      await GetsUser(updateFormData);
+    };
+
+    fetchData();
   }, [updateFormData]);
+
+  useEffect(() => {
+    if (formData.usuarios && formData.usuarios.length > 0) {
+      setIsLoading(false);
+    }
+  }, [formData.usuarios]);
 
   const handleViewDetails = (user) => {
     setSelectedUser(user);
@@ -25,14 +38,13 @@ const Registrations = () => {
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = formData.usuarios?.slice(indexOfFirstUser, indexOfLastUser);
 
-  // Cambiar la página
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // Número total de páginas
   const totalPages = Math.ceil(formData.usuarios?.length / usersPerPage);
 
   return (
     <div className="pt-4">
+
       <h1 className="text-2xl font-bold text-white ml-4 mb-4">Samla</h1>
       <div className="overflow-x-auto bg-white h-screen">
         <h2 className="text-2xl font-bold py-10 mx-4 md:mx-28 text-left">Historial de registros</h2>
@@ -47,7 +59,16 @@ const Registrations = () => {
             </tr>
           </thead>
           <tbody>
-            {currentUsers && currentUsers.length > 0 ? (
+            {isLoading ? (
+              <tr>
+                <td colSpan="4" className="px-4 py-2 border-b text-center">
+                  <div className="flex justify-center items-center space-x-2">
+                    <div className="w-4 h-4 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+                    <span>Cargando información...</span>
+                  </div>
+                </td>
+              </tr>
+            ) : currentUsers && currentUsers.length > 0 ? (
               currentUsers.map((usuario, index) => (
                 <tr key={index} className="hover:bg-gray-100">
                   <td className="px-4 py-2 border-b">{`${usuario.nombres} ${usuario.apellidos}`}</td>
@@ -73,7 +94,6 @@ const Registrations = () => {
 
         {formData.usuarios && formData.usuarios.length > usersPerPage && (
           <div className="flex justify-end items-center mt-4 space-x-2 mx-28">
-            {/* Botón anterior */}
             <button
               className="w-8 h-8 flex items-center justify-center rounded border border-gray-300 text-gray-500 hover:bg-gray-200"
               onClick={() => paginate(currentPage - 1)}

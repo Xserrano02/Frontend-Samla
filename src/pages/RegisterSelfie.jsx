@@ -3,6 +3,7 @@ import { FaCamera } from 'react-icons/fa';
 import logo from '../Assets/images/logo.png';
 import CameraModal from '../components/CamaraModal';
 import { useNavigate } from 'react-router-dom';
+import BtnBack from '../components/BtnBack'
 
 
 function RegisterSelfie() {
@@ -15,7 +16,7 @@ function RegisterSelfie() {
     setIsModalOpen(!isModalOpen);
   }
 
-  const handleNavigate = () =>{
+  const handleNavigate = () => {
     navigate('/registrations')
 
   }
@@ -23,7 +24,13 @@ function RegisterSelfie() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-white">
-      <img src={logo} alt="Logo" className="mb-8 w-24" />
+      <BtnBack />
+
+      <img
+        src={logo}
+        alt="Logo"
+        className="mb-8 w-24 absolute top-16 left-38 md:static md:left-auto md:top-auto"
+      />
 
       <FaCamera className="text-6xl text-gray-400 mb-6" />
 
