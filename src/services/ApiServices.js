@@ -25,7 +25,7 @@ export const fetchUbicaciones = async () => {
     console.log('Datos que se enviarán:', formData);
 
     try {
-        const response = await fetch('http://localhost:4000/api/users', {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/users`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ export const fetchUbicaciones = async () => {
 
   export const GetsUser = async (updateFormData) => {
     try {
-        const response = await fetch('http://localhost:4000/api/users', {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/users`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
