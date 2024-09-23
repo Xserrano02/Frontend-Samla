@@ -69,10 +69,14 @@ function Form({ handleContinue }) {
     }
 
     return (
-        <div className="mx-10 mt-0 md:mt-33 bg-white">
+        <div className="mx-10 mb-0 md:mt-0 bg-white">
             <div className="mb-6 text-center flex flex-col gap-y-2 items-center md:items-start">
                 <img src={logo} alt="" className="w-28" />
                 <h2 className="mt-2 text-xl font-semibold text-gray-800 text-clip md:text-left">Registro</h2>
+            </div>
+
+            <div>
+                
             </div>
             <form onSubmit={handleSubmit}>
                 <Inputs
@@ -144,6 +148,7 @@ function Form({ handleContinue }) {
                 />
 
                 <Inputs
+                    type="number"
                     label="Número de identificación"
                     placeholder="000000000-0"
                     name="numeroIdentificacion"

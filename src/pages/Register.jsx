@@ -21,7 +21,7 @@ function Register() {
       <div className="flex justify-center items-center w-full md:w-1/2 h-[60vh] md:h-screen">
       <img  src={Imagen1} alt='' className='w-[70%] md:w-[60%]'/>
         </div>
-        <div className='w-full md:w-1/2 h-screen px-0 md:px-[5%] py-10 md:py-28 bg-white'>
+        <div className='w-full md:w-1/2 md:min-h-screen px-0 md:px-[5%] pt-10 pb-10 md:pt-28 md:py-10 bg-white'>
           <Form handleContinue={handleContinue}/>
         </div>
 

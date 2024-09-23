@@ -97,7 +97,7 @@ const FileUpload = ({ onContinue }) => {
 
     const file = e.dataTransfer.files[0];
     if (file) {
-      handleFileChange({ target: { files: [file] } }); // Pasa el archivo como un evento simulado
+      handleFileChange({ target: { files: [file] } });
     }
   };
 
@@ -120,7 +120,7 @@ const FileUpload = ({ onContinue }) => {
   const isNextButtonDisabled = !formData.documentoFotoFrontal || !formData.documentoFotoTrasera;
 
   return (
-    <div className="mb-4 px-0 md:px-36 lg:px-10 mt-10 justify-center items-center py-0 md:py-36">
+    <div className="px-0 md:px-36 lg:px-10 mt-10 justify-center items-center py-0 md:pt-20">
       <label className="block text-lg font-medium text-gray-800 mb-10 md:mb-4 text-center md:text-left">
         Fotografía de documento de identidad
       </label>

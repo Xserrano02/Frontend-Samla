@@ -15,16 +15,16 @@ function RegisterPicture() {
 
 
   return (
-    <div className="flex flex-col md:flex-row w-full ounded-tl-lg rounded-tr-lg mt-8">
+    <div className="md:min-h-screen  flex flex-col md:flex-row w-full ounded-tl-lg rounded-tr-lg mt-8">
 
       <BtnBack/>
 
 
-      <section className="w-full md:w-1/2 h-full md:h-screen bg-white">
+      <section className="w-full md:w-1/2 h-full md:min-h-screen  bg-white">
         <FormData />
       </section>
 
-      <section className="w-full md:w-1/2 h-full md:h-screen bg-white">
+      <section className="w-full md:w-1/2 h-full md:min-h-screen  bg-white">
         <DragAndDrog onContinue={handleNavigate}/>
       </section>
 

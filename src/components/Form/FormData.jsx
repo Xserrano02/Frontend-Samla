@@ -54,7 +54,7 @@ function FormData() {
   }
 
   return (
-    <div className="md:py-36 mt-24 md:mt-0">
+    <div className=" md:min-h-screen md:pt-28 mt-24 md:mt-0">
       <img
         src={logo}
         alt="Logo"
