@@ -70,6 +70,9 @@ const FileUpload = ({ onContinue }) => {
     setCurrentImageType('');
   };
 
+  // Deshabilitar el botón "Siguiente" si no se han subido ambas imágenes
+  const isNextButtonDisabled = !formData.documentoFotoFrontal || !formData.documentoFotoTrasera;
+
   return (
     <div className="mb-4 px-0 md:px-36 lg:px-10 mt-10 justify-center items-center py-0 md:py-36">
       <label className="block text-lg font-medium text-gray-800 mb-10 md:mb-4 text-center md:text-left">
@@ -112,6 +115,7 @@ const FileUpload = ({ onContinue }) => {
         <Button 
           onClick={onContinue} 
           className={'w-full md:w-44 px-4 py-2 font-medium text-white bg-orange-500 rounded-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500'} 
+          disabled={isNextButtonDisabled}
         >
           Siguiente
         </Button>
@@ -121,6 +125,10 @@ const FileUpload = ({ onContinue }) => {
           Cancelar
         </Button>
       </div>
+
+      {isNextButtonDisabled && (
+        <p className="text-red-500 text-center mt-4">Por favor, sube ambas imágenes antes de continuar.</p>
+      )}
     </div>
   );
 };

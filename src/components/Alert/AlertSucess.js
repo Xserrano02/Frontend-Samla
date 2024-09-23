@@ -19,7 +19,7 @@ export const ShowFaceRecognition = () => {
 export const showErrorAlert= () => {
   return Swal.fire({
     title: "Oops...",
-    text: "Algo ha fallado, intente mas tarde",
+    text: "Algo ha fallado, intente mas tarde o revise los campos nuevamente",
     icon: "error",
   });
 };
