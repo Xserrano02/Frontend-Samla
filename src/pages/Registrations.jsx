@@ -6,7 +6,7 @@ import UserDetailsModal from '../components/UserModal';
 
 const Registrations = () => {
   const { formData, updateFormData } = useContext(FormContext);
-  const [selectedUser, setSelectedUser] = useState(null); 
+  const [selectedUser, setSelectedUser] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const usersPerPage = 12;
@@ -48,7 +48,7 @@ const Registrations = () => {
       <h1 className="text-2xl font-bold text-white ml-4 mb-4">Samla</h1>
       <div className="overflow-x-auto bg-white h-screen">
         <h2 className="text-2xl font-bold py-10 mx-4 md:mx-28 text-left">Historial de registros</h2>
-        
+
         <table className="min-w-[100%] md:min-w-[82%] bg-white mx-0 md:mx-28">
           <thead>
             <tr>
@@ -92,7 +92,7 @@ const Registrations = () => {
           </tbody>
         </table>
 
-        {formData.usuarios && formData.usuarios.length > usersPerPage && (
+        {formData.usuarios && formData.usuarios.length > 0 && (
           <div className="flex justify-end items-center mt-4 space-x-2 mx-28">
             <button
               className="w-8 h-8 flex items-center justify-center rounded border border-gray-300 text-gray-500 hover:bg-gray-200"
@@ -105,9 +105,8 @@ const Registrations = () => {
             {[...Array(totalPages)].map((_, i) => (
               <button
                 key={i}
-                className={`w-8 h-8 flex items-center justify-center rounded border ${
-                  currentPage === i + 1 ? 'border-blue-500 text-blue-500 font-bold' : 'border-gray-300 text-gray-500'
-                } hover:bg-gray-200`}
+                className={`w-8 h-8 flex items-center justify-center rounded border ${currentPage === i + 1 ? 'border-blue-500 text-blue-500 font-bold' : 'border-gray-300 text-gray-500'
+                  } hover:bg-gray-200`}
                 onClick={() => paginate(i + 1)}
               >
                 {i + 1}
@@ -123,6 +122,7 @@ const Registrations = () => {
             </button>
           </div>
         )}
+
 
         {selectedUser && (
           <UserDetailsModal user={selectedUser} onClose={handleCloseModal} />

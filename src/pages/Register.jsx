@@ -1,7 +1,7 @@
 import React from 'react';
 import Imagen1 from '../Assets/images/Imagen 1.png';
 import Form from '../components/Form/Form';
-// import icon from '../Assets/Icons/Icon-register.svg';
+import icon from '../Assets/Icons/Icon-register.svg';
 import '../Assets/styles/register.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,12 +17,17 @@ function Register() {
   };
   return (
     <section>
-      <div className='flex flex-col md:flex-row w-full ounded-tl-lg rounded-tr-lg'> 
-      <div className="flex justify-center items-center w-full md:w-1/2 h-[60vh] md:h-screen">
-      <img  src={Imagen1} alt='' className='w-[70%] md:w-[60%]'/>
+      <div className='flex flex-col md:flex-row w-full ounded-tl-lg rounded-tr-lg'>
+        <div className="flex justify-center items-center w-full md:w-1/2 h-[60vh] md:h-screen">
+          <img src={Imagen1} alt='' className='w-[70%] md:w-[60%]' />
+          <div className='absolute top-40 left-9 md:left-28 md:top-[40%] z-10 bg-white rounded-full p-2 shadow-lg'>
+            <img src={icon} alt='' className='w-[40px] h-[40px]' />
+          </div>
+
+
         </div>
         <div className='w-full md:w-1/2 md:min-h-screen px-0 md:px-[5%] pt-10 pb-10 md:pt-28 md:py-10 bg-white'>
-          <Form handleContinue={handleContinue}/>
+          <Form handleContinue={handleContinue} />
         </div>
 
       </div>
