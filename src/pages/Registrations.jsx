@@ -70,7 +70,7 @@ const Registrations = () => {
               </tr>
             ) : currentUsers && currentUsers.length > 0 ? (
               currentUsers.map((usuario, index) => (
-                <tr key={index} className="hover:bg-gray-100">
+                <tr key={index} className="hover:bg-[#f3f4ff]">
                   <td className="px-4 py-2 border-b">{`${usuario.nombres} ${usuario.apellidos}`}</td>
                   <td className="px-4 py-2 border-b text-[#667085] hidden md:table-cell">{usuario.correo}</td>
                   <td className="px-4 py-2 border-b text-[#667085] hidden md:table-cell">{usuario.telefono}</td>
