@@ -4,26 +4,73 @@ import Button from './Button';
 import { FormContext } from '../../context/FormContext';
 import ImagePreviewModal from '../../components/ImagePreviewModal';
 
+
 const FileUpload = ({ onContinue }) => {
   const { formData, updateFormData } = useContext(FormContext);
   const [imageToPreview, setImageToPreview] = useState(null);
   const [currentImageType, setCurrentImageType] = useState('');
   const [dragActive, setDragActive] = useState(false);
 
-  const handleFileChange = (file) => {
+
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        if (!formData.documentoFotoFrontal) {
-          setCurrentImageType('frontal');
-        } else if (!formData.documentoFotoTrasera) {
-          setCurrentImageType('trasera');
+        try {
+            if (!file.type.startsWith('image/')) {
+                throw new Error('El archivo no es una imagen.');
+            }
+
+            const img = new Image();
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+                img.src = e.target.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+
+                    const maxWidth = 500;
+                    const maxHeight = 500;
+                    let width = img.width;
+                    let height = img.height;
+
+                    // Mantener la proporción de la imagen
+                    if (width > height) {
+                        if (width > maxWidth) {
+                            height = Math.round((height * maxWidth) / width);
+                            width = maxWidth;
+                        }
+                    } else {
+                        if (height > maxHeight) {
+                            width = Math.round((width * maxHeight) / height);
+                            height = maxHeight;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    const optimizedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+
+                    if (!formData.documentoFotoFrontal) {
+                        setCurrentImageType('frontal');
+                    } else if (!formData.documentoFotoTrasera) {
+                        setCurrentImageType('trasera');
+                    }
+
+                    setImageToPreview(optimizedBase64);
+                };
+            };
+
+            reader.readAsDataURL(file);
+        } catch (error) {
+            console.error('Error al procesar la imagen:', error.message);
         }
-        setImageToPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
     }
-  };
+};
 
   const handleDragEnter = (e) => {
     e.preventDefault();
@@ -50,7 +97,7 @@ const FileUpload = ({ onContinue }) => {
 
     const file = e.dataTransfer.files[0];
     if (file) {
-      handleFileChange(file);
+      handleFileChange({ target: { files: [file] } }); // Pasa el archivo como un evento simulado
     }
   };
 
@@ -70,7 +117,6 @@ const FileUpload = ({ onContinue }) => {
     setCurrentImageType('');
   };
 
-  // Deshabilitar el botón "Siguiente" si no se han subido ambas imágenes
   const isNextButtonDisabled = !formData.documentoFotoFrontal || !formData.documentoFotoTrasera;
 
   return (
@@ -91,7 +137,7 @@ const FileUpload = ({ onContinue }) => {
         <input 
           type="file" 
           id="file-upload" 
-          onChange={(e) => handleFileChange(e.target.files[0])} 
+          onChange={handleFileChange}  // Pasamos el evento completo
           className="hidden" 
           accept="image/*" 
         />
