@@ -17,17 +17,14 @@ function WebcamCapture({ onCapture, onClose, navigate }) {
       img.src = imageSrc;
       
       img.onload = () => {
-        // Crear un canvas para redimensionar la imagen
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
 
-        // Establecer las dimensiones del canvas (ajustar el tamaño si es necesario)
-        const maxWidth = 500; // Ancho máximo
-        const maxHeight = 500; // Alto máximo
+        const maxWidth = 500;
+        const maxHeight = 500;
         let width = img.width;
         let height = img.height;
 
-        // Mantener la proporción de la imagen
         if (width > height) {
           if (width > maxWidth) {
             height = Math.round((height * maxWidth) / width);
@@ -43,34 +40,24 @@ function WebcamCapture({ onCapture, onClose, navigate }) {
         canvas.width = width;
         canvas.height = height;
 
-        // Dibujar la imagen en el canvas redimensionado
         ctx.drawImage(img, 0, 0, width, height);
 
-        // Convertir el canvas a base64 optimizado (JPEG con calidad ajustada)
-        const optimizedBase64 = canvas.toDataURL('image/jpeg', 0.7); // 0.7 es la calidad
+        const optimizedBase64 = canvas.toDataURL('image/jpeg', 0.7);
 
-        // Establecer la imagen optimizada para la previsualización
         setCapturedImage(optimizedBase64);
 
-        // Actualizar formData con la imagen optimizada
         updateFormData({ selfieFoto: optimizedBase64 });
-
-        handleSend()
       };
     }
   }
 
   async function handleSend() {
-    if (onCapture) {
-      onCapture(capturedImage);
-
-      try {
-        const result = await PostUsers(formData);
-        console.log('Datos enviados:', result);
-        navigate()
-      } catch (error) {
-        console.error('Error al enviar los datos:', error);
-      }
+    try {
+      const result = await PostUsers(formData);
+      console.log('Datos enviados:', result);
+      navigate();
+    } catch (error) {
+      console.error('Error al enviar los datos:', error);
     }
   }
 
@@ -98,7 +85,7 @@ function WebcamCapture({ onCapture, onClose, navigate }) {
             <button onClick={() => setCapturedImage(null)} className="px-4 py-2 bg-gray-500 text-white rounded-md">
               Tomar de nuevo
             </button>
-            <button onClick={() => onCapture(capturedImage)} className="px-4 py-2 bg-green-500 text-white rounded-md">
+            <button onClick={handleSend} className="px-4 py-2 bg-green-500 text-white rounded-md">
               Usar esta foto
             </button>
           </div>
