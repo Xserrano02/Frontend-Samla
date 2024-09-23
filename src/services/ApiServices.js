@@ -49,8 +49,6 @@ export const fetchUbicaciones = async () => {
     }
 };
 
-
-
   export const GetsUser = async (updateFormData) => {
     try {
         const response = await fetch(`${process.env.REACT_APP_API_URL}/users`, {
